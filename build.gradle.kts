@@ -16,13 +16,13 @@ repositories {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
-    implementation("org.spongepowered:configurate-yaml:4.0.0")
+    compileOnly("io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT")
+    implementation("space.arim.dazzleconf:dazzleconf-toml:2.0.0-M2")
 }
 
 paperPluginYaml {
     main = "fi.fabianadrian.speedsleep.SpeedSleep"
     author = "FabianAdrian"
-    apiVersion = "1.20"
+    apiVersion = "1.21.11"
 }
 

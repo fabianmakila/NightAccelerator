@@ -1,7 +1,7 @@
 package fi.fabianadrian.speedsleep.speedup.task;
 
 import fi.fabianadrian.speedsleep.SpeedSleep;
-import fi.fabianadrian.speedsleep.config.MainConfig;
+import fi.fabianadrian.speedsleep.config.section.CurveSection;
 import org.bukkit.World;
 
 public final class AdvanceNightTask implements Runnable {
@@ -11,7 +11,7 @@ public final class AdvanceNightTask implements Runnable {
 	public AdvanceNightTask(SpeedSleep plugin, World world, int sleepingPlayerCount, int totalPlayerCount) {
 		this.world = world;
 
-		MainConfig.CurveConfig config = plugin.configManager().mainConfig().curve();
+		CurveSection config = plugin.config().curve();
 
 		double sleepingPlayersRatio = (double) sleepingPlayerCount / totalPlayerCount;
 		this.ticksToAdd = (long) interpolate(config.min(), config.max(), sleepingPlayersRatio, config.factor());

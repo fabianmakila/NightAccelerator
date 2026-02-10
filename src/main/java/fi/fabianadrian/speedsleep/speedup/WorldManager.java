@@ -11,7 +11,7 @@ public final class WorldManager {
 	private final Map<UUID, SpeedupHandler> worldData = new HashMap<>();
 
 	public WorldManager(SpeedSleep plugin) {
-		List<String> disabledWorldNames = plugin.configManager().mainConfig().disabledWorldNames();
+		List<String> disabledWorldNames = plugin.config().disabledWorldNames();
 		plugin.getServer().getWorlds().forEach(world -> {
 			if (!world.isBedWorks()) {
 				return;

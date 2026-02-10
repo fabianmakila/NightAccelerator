@@ -1,7 +1,8 @@
 package fi.fabianadrian.speedsleep.speedup;
 
 import fi.fabianadrian.speedsleep.SpeedSleep;
-import fi.fabianadrian.speedsleep.config.MainConfig;
+import fi.fabianadrian.speedsleep.config.section.BossbarSection;
+import fi.fabianadrian.speedsleep.config.section.TitleSection;
 import fi.fabianadrian.speedsleep.resolver.SleepTagResolver;
 import fi.fabianadrian.speedsleep.speedup.task.AdvanceNightTask;
 import net.kyori.adventure.bossbar.BossBar;
@@ -28,8 +29,8 @@ public final class SpeedupHandler {
 	private final List<Player> sleepingPlayers = new ArrayList<>();
 	private final List<BukkitTask> tasks = new ArrayList<>();
 	private final BossBar bossBar;
-	private int totalPlayerCount = 0;
 	private final TagResolver.Builder tagResolverBuilder;
+	private int totalPlayerCount = 0;
 
 	public SpeedupHandler(SpeedSleep plugin, World world) {
 		this.plugin = plugin;
@@ -41,8 +42,8 @@ public final class SpeedupHandler {
 				Placeholder.unparsed("world_players_total", String.valueOf(this.totalPlayerCount))
 		);
 
-		MainConfig.BossbarConfig bossbarConfig = this.plugin.configManager().mainConfig().bossbar();
-		this.bossBar = BossBar.bossBar(Component.empty(), 0.0f, bossbarConfig.color(), BossBar.Overlay.PROGRESS);
+		BossbarSection bossbarSection = this.plugin.config().bossbar();
+		this.bossBar = BossBar.bossBar(Component.empty(), 0.0f, bossbarSection.color(), BossBar.Overlay.PROGRESS);
 	}
 
 	public void handlePlayerLeave(Player player) {
@@ -105,14 +106,14 @@ public final class SpeedupHandler {
 	}
 
 	private void updateBossbar() {
-		MainConfig.BossbarConfig config = this.plugin.configManager().mainConfig().bossbar();
+		BossbarSection config = this.plugin.config().bossbar();
 
 		Component name = MiniMessage.miniMessage().deserialize(config.title());
 	}
 
 	private void sendSleepingTitle() {
 		Title.Times times = Title.Times.times(Duration.ZERO, Duration.ofSeconds(1), Duration.ofSeconds(1));
-		MainConfig.TitleConfig config = this.plugin.configManager().mainConfig().title();
+		TitleSection config = this.plugin.config().title();
 		this.sleepingPlayers.forEach(player -> {
 			TagResolver tagResolver = this.tagResolverBuilder.resolver(SleepTagResolver.worldTime(this.world, player)).build();
 

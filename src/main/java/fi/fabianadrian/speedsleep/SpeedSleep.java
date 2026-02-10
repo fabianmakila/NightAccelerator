@@ -1,12 +1,12 @@
 package fi.fabianadrian.speedsleep;
 
 import fi.fabianadrian.speedsleep.config.ConfigManager;
+import fi.fabianadrian.speedsleep.config.MainConfig;
 import fi.fabianadrian.speedsleep.listener.BedListener;
 import fi.fabianadrian.speedsleep.listener.PlayerListener;
 import fi.fabianadrian.speedsleep.speedup.WorldManager;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.spongepowered.configurate.ConfigurateException;
 
 import java.util.List;
 
@@ -16,21 +16,15 @@ public final class SpeedSleep extends JavaPlugin {
 
 	@Override
 	public void onEnable() {
-		this.configManager = new ConfigManager(getDataPath());
-		try {
-			this.configManager.reload();
-		} catch (ConfigurateException e) {
-			getSLF4JLogger().error("Could not load configuration", e);
-			getServer().getPluginManager().disablePlugin(this);
-			return;
-		}
+		this.configManager = new ConfigManager(this);
+		this.configManager.load();
 
 		this.speedupManager = new WorldManager(this);
 		registerListeners();
 	}
 
-	public ConfigManager configManager() {
-		return this.configManager;
+	public MainConfig config() {
+		return this.configManager.config();
 	}
 
 	public WorldManager speedupManager() {
