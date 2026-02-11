@@ -1,7 +1,7 @@
-package fi.fabianadrian.speedsleep.listener;
+package fi.fabianadrian.nightaccelerator.listener;
 
-import fi.fabianadrian.speedsleep.SpeedSleep;
-import fi.fabianadrian.speedsleep.speedup.WorldManager;
+import fi.fabianadrian.nightaccelerator.NightAccelerator;
+import fi.fabianadrian.nightaccelerator.world.WorldManager;
 import io.papermc.paper.event.player.PlayerDeepSleepEvent;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -11,31 +11,31 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 public final class PlayerListener implements Listener {
-	private final WorldManager speedupManager;
+	private final WorldManager worldManager;
 
-	public PlayerListener(SpeedSleep plugin) {
-		this.speedupManager = plugin.speedupManager();
+	public PlayerListener(NightAccelerator plugin) {
+		this.worldManager = plugin.worldManager();
 	}
 
 	@EventHandler
 	public void onJoin(PlayerJoinEvent event) {
-		this.speedupManager.recalculate(event.getPlayer().getWorld().getUID());
+		this.worldManager.recalculate(event.getPlayer().getWorld());
 	}
 
 	@EventHandler
 	public void onLeave(PlayerQuitEvent event) {
-		this.speedupManager.recalculate(event.getPlayer().getWorld().getUID());
+		this.worldManager.recalculate(event.getPlayer().getWorld());
 	}
 
 	@EventHandler
 	public void onGamemodeChange(PlayerGameModeChangeEvent event) {
-		this.speedupManager.recalculate(event.getPlayer().getWorld().getUID());
+		this.worldManager.recalculate(event.getPlayer().getWorld());
 	}
 
 	@EventHandler
 	public void onWorldChange(PlayerChangedWorldEvent event) {
-		this.speedupManager.recalculate(event.getFrom().getUID());
-		this.speedupManager.recalculate(event.getPlayer().getWorld().getUID());
+		this.worldManager.recalculate(event.getFrom());
+		this.worldManager.recalculate(event.getPlayer().getWorld());
 	}
 
 	@EventHandler

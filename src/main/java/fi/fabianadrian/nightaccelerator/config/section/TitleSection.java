@@ -1,4 +1,4 @@
-package fi.fabianadrian.speedsleep.config.section;
+package fi.fabianadrian.nightaccelerator.config.section;
 
 public interface TitleSection {
 	default String title() {

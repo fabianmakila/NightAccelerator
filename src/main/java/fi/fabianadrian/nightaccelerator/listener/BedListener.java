@@ -1,7 +1,7 @@
-package fi.fabianadrian.speedsleep.listener;
+package fi.fabianadrian.nightaccelerator.listener;
 
-import fi.fabianadrian.speedsleep.SpeedSleep;
-import fi.fabianadrian.speedsleep.speedup.WorldManager;
+import fi.fabianadrian.nightaccelerator.NightAccelerator;
+import fi.fabianadrian.nightaccelerator.world.WorldManager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerBedEnterEvent;
@@ -10,8 +10,8 @@ import org.bukkit.event.player.PlayerBedLeaveEvent;
 public final class BedListener implements Listener {
 	private final WorldManager speedupManager;
 
-	public BedListener(SpeedSleep plugin) {
-		this.speedupManager = plugin.speedupManager();
+	public BedListener(NightAccelerator plugin) {
+		this.speedupManager = plugin.worldManager();
 	}
 
 	@EventHandler
@@ -19,7 +19,7 @@ public final class BedListener implements Listener {
 		if (event.isCancelled()) {
 			return;
 		}
-		this.speedupManager.recalculate(event.getPlayer().getWorld().getUID());
+		this.speedupManager.recalculate(event.getPlayer().getWorld());
 	}
 
 	@EventHandler
@@ -27,6 +27,6 @@ public final class BedListener implements Listener {
 		if (event.isCancelled()) {
 			return;
 		}
-		this.speedupManager.recalculate(event.getPlayer().getWorld().getUID());
+		this.speedupManager.recalculate(event.getPlayer().getWorld());
 	}
 }

@@ -18,10 +18,11 @@ repositories {
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT")
     implementation("space.arim.dazzleconf:dazzleconf-toml:2.0.0-M2")
+    compileOnly("io.github.miniplaceholders:miniplaceholders-api:3.1.0")
 }
 
 paperPluginYaml {
-    main = "fi.fabianadrian.speedsleep.SpeedSleep"
+    main = "fi.fabianadrian.nightaccelerator.NightAccelerator"
     author = "FabianAdrian"
     apiVersion = "1.21.11"
 }

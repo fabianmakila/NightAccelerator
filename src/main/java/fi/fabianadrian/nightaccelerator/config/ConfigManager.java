@@ -1,6 +1,6 @@
-package fi.fabianadrian.speedsleep.config;
+package fi.fabianadrian.nightaccelerator.config;
 
-import fi.fabianadrian.speedsleep.SpeedSleep;
+import fi.fabianadrian.nightaccelerator.NightAccelerator;
 import org.slf4j.Logger;
 import space.arim.dazzleconf.Configuration;
 import space.arim.dazzleconf.StandardErrorPrint;
@@ -20,7 +20,7 @@ public final class ConfigManager {
 	private final Logger logger;
 	private MainConfig config;
 
-	public ConfigManager(SpeedSleep plugin) {
+	public ConfigManager(NightAccelerator plugin) {
 		this.dataDirectory = plugin.getDataPath();
 		this.logger = plugin.getSLF4JLogger();
 

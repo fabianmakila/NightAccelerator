@@ -1,2 +1,2 @@
-rootProject.name = "SpeedSleep"
+rootProject.name = "NightAccelerator"
 
