@@ -60,11 +60,15 @@ public final class SleepWorld {
 		return this.world;
 	}
 
+	public NightRange nightRange() {
+		return this.world.isClearWeather() ? NightRange.CLEAR : NightRange.RAIN;
+	}
+
 	public float nightProgress() {
-		if (this.world.isClearWeather()) {
-			return NightRange.CLEAR.progress(this.world.getTime());
-		} else {
-			return NightRange.RAIN.progress(this.world.getTime());
-		}
+		return nightRange().progress(this.world.getTime());
+	}
+
+	public boolean isNightOver() {
+		return !nightRange().isInRange(this.world.getTime());
 	}
 }

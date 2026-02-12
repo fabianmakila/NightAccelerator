@@ -14,7 +14,7 @@ public enum NightRange {
 		this.duration = end - start;
 	}
 
-	private boolean isInRange(long time) {
+	public boolean isInRange(long time) {
 		return time >= this.start && time <= this.end;
 	}
 

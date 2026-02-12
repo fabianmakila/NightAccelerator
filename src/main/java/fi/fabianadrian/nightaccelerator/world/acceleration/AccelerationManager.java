@@ -1,28 +1,38 @@
 package fi.fabianadrian.nightaccelerator.world.acceleration;
 
 import fi.fabianadrian.nightaccelerator.NightAccelerator;
+import fi.fabianadrian.nightaccelerator.config.MainConfig;
 import fi.fabianadrian.nightaccelerator.config.section.AccelerationSection;
+import fi.fabianadrian.nightaccelerator.config.section.WeatherSection;
 import fi.fabianadrian.nightaccelerator.world.SleepWorld;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scheduler.BukkitTask;
 
+import java.util.Random;
+
 public final class AccelerationManager {
+	private static final Random RANDOM = new Random();
 	private final SleepWorld sleepWorld;
 	private final BukkitScheduler scheduler = Bukkit.getScheduler();
 	private final NightAccelerator plugin;
 	private final AccelerateTask accelerateTask;
+	private final MainConfig config;
 	private BukkitTask bukkitTask;
 
 	public AccelerationManager(NightAccelerator plugin, SleepWorld sleepWorld) {
 		this.plugin = plugin;
 		this.sleepWorld = sleepWorld;
 		this.accelerateTask = new AccelerateTask(sleepWorld.world());
+		this.config = plugin.config();
 	}
 
 	public void recalculate() {
 		if (this.sleepWorld.sleeping().isEmpty()) {
 			if (this.bukkitTask != null) {
+				if (this.sleepWorld.isNightOver()) {
+					onPostNight();
+				}
 				this.bukkitTask.cancel();
 				this.bukkitTask = null;
 			}
@@ -58,5 +68,12 @@ public final class AccelerationManager {
 		}
 
 		return min + (max - min) * adjustedValue;
+	}
+
+	private void onPostNight() {
+		WeatherSection weatherConfig = this.config.weather();
+		if (weatherConfig.clearEnabled() && !this.sleepWorld.world().isClearWeather()) {
+			this.sleepWorld.world().setClearWeatherDuration(RANDOM.nextInt(weatherConfig.clearMax() - weatherConfig.clearMin() + 1) + weatherConfig.clearMin());
+		}
 	}
 }
