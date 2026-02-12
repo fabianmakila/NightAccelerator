@@ -4,7 +4,7 @@ import space.arim.dazzleconf.engine.Comments;
 import space.arim.dazzleconf.engine.liaison.SubSection;
 
 public interface DisplaySection {
-	@Comments("How frequently bossbar and titles will be updated in milliseconds")
+	@Comments("Interval in milliseconds how frequently bossbar and titles will be updated")
 	default int updateRate() {
 		return 500;
 	}

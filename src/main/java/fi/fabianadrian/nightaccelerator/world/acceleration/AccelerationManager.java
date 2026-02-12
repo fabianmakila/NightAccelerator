@@ -1,7 +1,7 @@
 package fi.fabianadrian.nightaccelerator.world.acceleration;
 
 import fi.fabianadrian.nightaccelerator.NightAccelerator;
-import fi.fabianadrian.nightaccelerator.config.section.CurveSection;
+import fi.fabianadrian.nightaccelerator.config.section.AccelerationSection;
 import fi.fabianadrian.nightaccelerator.world.SleepWorld;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -29,7 +29,7 @@ public final class AccelerationManager {
 			return;
 		}
 
-		CurveSection config = this.plugin.config().curve();
+		AccelerationSection config = this.plugin.config().acceleration();
 
 		double sleepingPlayersRatio = (double) this.sleepWorld.sleeping().size() / this.sleepWorld.max();
 		long ticksToAdd = (long) interpolate(config.min(), config.max(), sleepingPlayersRatio, config.factor());
