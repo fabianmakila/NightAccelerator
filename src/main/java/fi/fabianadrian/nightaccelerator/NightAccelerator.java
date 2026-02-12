@@ -6,7 +6,10 @@ import fi.fabianadrian.nightaccelerator.listener.BedListener;
 import fi.fabianadrian.nightaccelerator.listener.PlayerListener;
 import fi.fabianadrian.nightaccelerator.listener.ServerListener;
 import fi.fabianadrian.nightaccelerator.placeholder.TagResolverFactory;
+import fi.fabianadrian.nightaccelerator.placeholder.miniplaceholders.MiniPlaceholdersExpansion;
+import fi.fabianadrian.nightaccelerator.placeholder.miniplaceholders.MiniPlaceholdersTagResolverFactory;
 import fi.fabianadrian.nightaccelerator.world.WorldManager;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -15,10 +18,11 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
 public final class NightAccelerator extends JavaPlugin {
+	public static final MiniMessage MINI_MESSAGE = MiniMessage.miniMessage();
+	private final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 	private ConfigManager configManager;
 	private WorldManager worldManager;
 	private TagResolverFactory resolverFactory;
-	private ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 
 	@Override
 	public void onEnable() {
@@ -27,7 +31,8 @@ public final class NightAccelerator extends JavaPlugin {
 		registerListeners();
 
 		if (getServer().getPluginManager().isPluginEnabled("MiniPlaceholders")) {
-
+			this.resolverFactory = new MiniPlaceholdersTagResolverFactory();
+			new MiniPlaceholdersExpansion(this).register();
 		} else {
 			this.resolverFactory = new TagResolverFactory();
 		}

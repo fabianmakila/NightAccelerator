@@ -1,6 +1,7 @@
 package fi.fabianadrian.nightaccelerator.world;
 
 import fi.fabianadrian.nightaccelerator.NightAccelerator;
+import fi.fabianadrian.nightaccelerator.night.NightRange;
 import fi.fabianadrian.nightaccelerator.world.acceleration.AccelerationManager;
 import fi.fabianadrian.nightaccelerator.world.display.DisplayManager;
 import org.bukkit.GameMode;
@@ -57,5 +58,13 @@ public final class SleepWorld {
 
 	public World world() {
 		return this.world;
+	}
+
+	public float nightProgress() {
+		if (this.world.isClearWeather()) {
+			return NightRange.CLEAR.progress(this.world.getTime());
+		} else {
+			return NightRange.RAIN.progress(this.world.getTime());
+		}
 	}
 }

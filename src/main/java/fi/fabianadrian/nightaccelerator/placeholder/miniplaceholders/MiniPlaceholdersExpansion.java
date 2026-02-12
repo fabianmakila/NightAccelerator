@@ -20,6 +20,6 @@ public final class MiniPlaceholdersExpansion extends Placeholders {
 	}
 
 	public void register() {
-
+		this.expansion.register();
 	}
 }

@@ -7,16 +7,23 @@ import org.bukkit.entity.Player;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.util.Locale;
 
-public class Placeholders {
+public abstract class Placeholders {
+	protected String time(World world) {
+		return time(world, Locale.getDefault());
+	}
+
 	protected String time(Player player) {
-		World world = player.getWorld();
+		return time(player.getWorld(), player.locale());
+	}
 
+	private String time(World world, Locale locale) {
 		int worldTime = (int) world.getTime() + 6000;
 		int hours = (worldTime / 1000) % 24; // Each 1000 ticks = 1 hour
 		int minutes = (worldTime % 1000) * 60 / 1000; // Convert remaining ticks to minutes
 		LocalTime time = LocalTime.of(hours, minutes);
-		DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT).withLocale(player.locale());
+		DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT).withLocale(locale);
 		return formatter.format(time);
 	}
 

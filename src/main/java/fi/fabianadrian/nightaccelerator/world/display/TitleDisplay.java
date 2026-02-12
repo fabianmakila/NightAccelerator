@@ -5,10 +5,10 @@ import fi.fabianadrian.nightaccelerator.config.section.TitleSection;
 import fi.fabianadrian.nightaccelerator.placeholder.TagResolverFactory;
 import fi.fabianadrian.nightaccelerator.world.SleepWorld;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.kyori.adventure.title.Title;
 import net.kyori.adventure.title.TitlePart;
+import org.bukkit.Bukkit;
 
 import java.time.Duration;
 
@@ -17,27 +17,25 @@ public final class TitleDisplay implements Display {
 	private final SleepWorld world;
 	private final TitleSection config;
 	private final TagResolverFactory resolverFactory;
+	private final NightAccelerator plugin;
 
 	public TitleDisplay(NightAccelerator plugin, SleepWorld world) {
+		this.plugin = plugin;
 		this.world = world;
-		this.config = plugin.config().title();
+		this.config = plugin.config().display().title();
 		this.resolverFactory = plugin.resolverFactory();
 	}
 
 	@Override
 	public void update() {
-		sendSleepingTitle();
-	}
+		Bukkit.getScheduler().runTask(this.plugin, () -> this.world.sleeping().forEach(player -> {
+			TagResolver tagResolver = this.resolverFactory.player(this.world, player);
 
-	private void sendSleepingTitle() {
-		this.world.sleeping().forEach(player -> {
-			TagResolver tagResolver = this.resolverFactory.resolver(this.world, player);
-
-			Component title = MiniMessage.miniMessage().deserialize(this.config.title(), tagResolver);
-			Component subtitle = MiniMessage.miniMessage().deserialize(this.config.subtitle(), tagResolver);
+			Component title = NightAccelerator.MINI_MESSAGE.deserialize(this.config.title(), tagResolver);
+			Component subtitle = NightAccelerator.MINI_MESSAGE.deserialize(this.config.subtitle(), tagResolver);
 			player.sendTitlePart(TitlePart.TIMES, TIMES);
 			player.sendTitlePart(TitlePart.TITLE, title);
 			player.sendTitlePart(TitlePart.SUBTITLE, subtitle);
-		});
+		}));
 	}
 }

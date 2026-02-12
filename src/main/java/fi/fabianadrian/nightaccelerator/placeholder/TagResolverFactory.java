@@ -6,11 +6,24 @@ import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.bukkit.entity.Player;
 
 public class TagResolverFactory extends Placeholders {
-	public TagResolver resolver(SleepWorld world, Player player) {
-		return TagResolver.resolver(
-				Placeholder.unparsed("time", time(player)),
+	protected TagResolver.Builder globalBuilder(SleepWorld world) {
+		return TagResolver.builder().resolvers(
 				Placeholder.unparsed("sleeping", String.valueOf(sleeping(world))),
 				Placeholder.unparsed("max", String.valueOf(max(world)))
 		);
+	}
+
+	protected TagResolver.Builder playerBuilder(SleepWorld world, Player player) {
+		return globalBuilder(world).resolver(
+				Placeholder.unparsed("time", time(player))
+		);
+	}
+
+	public TagResolver player(SleepWorld world, Player player) {
+		return this.playerBuilder(world, player).build();
+	}
+
+	public TagResolver global(SleepWorld world) {
+		return this.globalBuilder(world).build();
 	}
 }
