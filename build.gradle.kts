@@ -4,6 +4,7 @@ plugins {
 	id("java")
 	id("xyz.jpenilla.resource-factory-paper-convention") version "1.3.1"
 	id("com.diffplug.spotless") version "8.2.1"
+	id("com.gradleup.shadow") version "9.3.1"
 }
 
 group = "fi.fabianadrian"
@@ -31,8 +32,8 @@ tasks {
 
 dependencies {
 	compileOnly("io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT")
-	implementation("space.arim.dazzleconf:dazzleconf-toml:2.0.0-M2")
 	compileOnly("io.github.miniplaceholders:miniplaceholders-api:3.1.0")
+	implementation("space.arim.dazzleconf:dazzleconf-toml:2.0.0-M2")
 }
 
 paperPluginYaml {
