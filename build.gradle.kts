@@ -2,7 +2,8 @@ import xyz.jpenilla.resourcefactory.paper.PaperPluginYaml.Load
 
 plugins {
 	id("java")
-	id("xyz.jpenilla.resource-factory-paper-convention") version "1.2.0"
+	id("xyz.jpenilla.resource-factory-paper-convention") version "1.3.1"
+	id("com.diffplug.spotless") version "8.2.1"
 }
 
 group = "fi.fabianadrian"
@@ -14,6 +15,17 @@ repositories {
 	maven {
 		name = "papermc"
 		url = uri("https://repo.papermc.io/repository/maven-public/")
+	}
+}
+
+java.toolchain.languageVersion.set(JavaLanguageVersion.of(21))
+
+tasks {
+	compileJava {
+		options.encoding = Charsets.UTF_8.name()
+	}
+	build {
+		dependsOn(spotlessApply)
 	}
 }
 
