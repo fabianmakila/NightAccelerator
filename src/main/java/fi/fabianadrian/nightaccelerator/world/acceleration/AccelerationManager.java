@@ -22,8 +22,10 @@ public final class AccelerationManager {
 
 	public void recalculate() {
 		if (this.sleepWorld.sleeping().isEmpty()) {
-			this.bukkitTask.cancel();
-			this.bukkitTask = null;
+			if (this.bukkitTask != null) {
+				this.bukkitTask.cancel();
+				this.bukkitTask = null;
+			}
 			return;
 		}
 

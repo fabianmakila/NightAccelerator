@@ -23,7 +23,6 @@ public enum NightRange {
 			return 0f;
 		}
 
-		double progress = (double) (time - this.start) / this.duration;
-		return (float) (progress * 100.0);
+		return (float) (time - this.start) / this.duration;
 	}
 }

@@ -37,9 +37,11 @@ public final class WorldManager {
 	}
 
 	public void recalculate(World world) {
-		SleepWorld sleepWorld = this.worlds.get(world.getUID());
-		if (sleepWorld != null) {
-			sleepWorld.recalculate();
-		}
+		Bukkit.getScheduler().runTaskLater(this.plugin, () -> {
+			SleepWorld sleepWorld = this.worlds.get(world.getUID());
+			if (sleepWorld != null) {
+				sleepWorld.recalculate();
+			}
+		}, 1);
 	}
 }

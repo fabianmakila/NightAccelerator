@@ -8,7 +8,7 @@ public interface BossbarSection {
 	}
 
 	default String title() {
-		return "<translatable:sleep.players_sleeping:'<world_players_sleeping>':'<world_players_total>'>";
+		return "<lang:sleep.players_sleeping:'<sleeping>':'<max>'>";
 	}
 
 	default BossBar.Color color() {

@@ -10,6 +10,6 @@ public interface TitleSection {
 	}
 
 	default String subtitle() {
-		return "<translatable:sleep.players_sleeping:'<world_players_sleeping>':'<world_players_total>'>";
+		return "<lang:sleep.players_sleeping:'<sleeping>':'<max>'>";
 	}
 }
