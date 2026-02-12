@@ -36,6 +36,11 @@ public final class BossbarDisplay implements Display {
 		this.bossBar.progress(this.world.nightProgress());
 	}
 
+	@Override
+	public void shutdown() {
+		this.bossBar.removeViewer(this.server);
+	}
+
 	private Component name() {
 		return NightAccelerator.MINI_MESSAGE.deserialize(this.config.title(), this.resolverFactory.global(this.world));
 	}

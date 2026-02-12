@@ -38,4 +38,9 @@ public final class TitleDisplay implements Display {
 			player.sendTitlePart(TitlePart.SUBTITLE, subtitle);
 		}));
 	}
+
+	@Override
+	public void shutdown() {
+
+	}
 }
