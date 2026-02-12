@@ -8,7 +8,6 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.kyori.adventure.title.Title;
 import net.kyori.adventure.title.TitlePart;
-import org.bukkit.Bukkit;
 
 import java.time.Duration;
 
@@ -17,10 +16,8 @@ public final class TitleDisplay implements Display {
 	private final SleepWorld world;
 	private final TitleSection config;
 	private final TagResolverFactory resolverFactory;
-	private final NightAccelerator plugin;
 
 	public TitleDisplay(NightAccelerator plugin, SleepWorld world) {
-		this.plugin = plugin;
 		this.world = world;
 		this.config = plugin.config().display().title();
 		this.resolverFactory = plugin.resolverFactory();
@@ -28,7 +25,7 @@ public final class TitleDisplay implements Display {
 
 	@Override
 	public void update() {
-		Bukkit.getScheduler().runTask(this.plugin, () -> this.world.sleeping().forEach(player -> {
+		this.world.sleeping().forEach(player -> {
 			TagResolver tagResolver = this.resolverFactory.player(this.world, player);
 
 			Component title = NightAccelerator.MINI_MESSAGE.deserialize(this.config.title(), tagResolver);
@@ -36,7 +33,7 @@ public final class TitleDisplay implements Display {
 			player.sendTitlePart(TitlePart.TIMES, TIMES);
 			player.sendTitlePart(TitlePart.TITLE, title);
 			player.sendTitlePart(TitlePart.SUBTITLE, subtitle);
-		}));
+		});
 	}
 
 	@Override
