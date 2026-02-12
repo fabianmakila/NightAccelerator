@@ -36,7 +36,7 @@ public final class AccelerationManager {
 		this.accelerateTask.ticksToAdd(ticksToAdd);
 
 		if (this.bukkitTask == null) {
-			this.bukkitTask = this.scheduler.runTaskTimer(plugin, this.accelerateTask, 0, 1);
+			this.bukkitTask = this.scheduler.runTaskTimer(this.plugin, this.accelerateTask, 0, config.updateRate());
 		}
 	}
 
