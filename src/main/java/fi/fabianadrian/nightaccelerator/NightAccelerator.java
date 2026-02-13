@@ -5,9 +5,8 @@ import fi.fabianadrian.nightaccelerator.config.MainConfig;
 import fi.fabianadrian.nightaccelerator.listener.BedListener;
 import fi.fabianadrian.nightaccelerator.listener.PlayerListener;
 import fi.fabianadrian.nightaccelerator.listener.ServerListener;
-import fi.fabianadrian.nightaccelerator.placeholder.TagResolverFactory;
-import fi.fabianadrian.nightaccelerator.placeholder.miniplaceholders.MiniPlaceholdersExpansion;
-import fi.fabianadrian.nightaccelerator.placeholder.miniplaceholders.MiniPlaceholdersTagResolverFactory;
+import fi.fabianadrian.nightaccelerator.placeholder.PlaceholderManager;
+import fi.fabianadrian.nightaccelerator.tagresolver.TagResolverFactory;
 import fi.fabianadrian.nightaccelerator.world.WorldManager;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.plugin.PluginManager;
@@ -20,9 +19,10 @@ import java.util.concurrent.ScheduledExecutorService;
 public final class NightAccelerator extends JavaPlugin {
 	public static final MiniMessage MINI_MESSAGE = MiniMessage.miniMessage();
 	private final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+	private final PlaceholderManager placeholderManager = new PlaceholderManager(this);
+	private final TagResolverFactory resolverFactory = new TagResolverFactory();
 	private ConfigManager configManager;
 	private WorldManager worldManager;
-	private TagResolverFactory resolverFactory;
 
 	@Override
 	public void onEnable() {
@@ -30,12 +30,7 @@ public final class NightAccelerator extends JavaPlugin {
 		this.worldManager = new WorldManager(this);
 		registerListeners();
 
-		if (getServer().getPluginManager().isPluginEnabled("MiniPlaceholders")) {
-			this.resolverFactory = new MiniPlaceholdersTagResolverFactory();
-			new MiniPlaceholdersExpansion(this).register();
-		} else {
-			this.resolverFactory = new TagResolverFactory();
-		}
+		this.placeholderManager.register();
 	}
 
 	public void load() {

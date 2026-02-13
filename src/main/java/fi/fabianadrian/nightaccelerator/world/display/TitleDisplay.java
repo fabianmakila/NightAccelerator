@@ -2,7 +2,7 @@ package fi.fabianadrian.nightaccelerator.world.display;
 
 import fi.fabianadrian.nightaccelerator.NightAccelerator;
 import fi.fabianadrian.nightaccelerator.config.section.TitleSection;
-import fi.fabianadrian.nightaccelerator.placeholder.TagResolverFactory;
+import fi.fabianadrian.nightaccelerator.tagresolver.TagResolverFactory;
 import fi.fabianadrian.nightaccelerator.world.SleepWorld;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
@@ -26,10 +26,10 @@ public final class TitleDisplay implements Display {
 	@Override
 	public void update() {
 		this.world.sleeping().forEach(player -> {
-			TagResolver tagResolver = this.resolverFactory.player(this.world, player);
+			TagResolver tagResolver = this.resolverFactory.resolver(this.world);
 
-			Component title = NightAccelerator.MINI_MESSAGE.deserialize(this.config.title(), tagResolver);
-			Component subtitle = NightAccelerator.MINI_MESSAGE.deserialize(this.config.subtitle(), tagResolver);
+			Component title = NightAccelerator.MINI_MESSAGE.deserialize(this.config.title(), player, tagResolver);
+			Component subtitle = NightAccelerator.MINI_MESSAGE.deserialize(this.config.subtitle(), player, tagResolver);
 			player.sendTitlePart(TitlePart.TIMES, TIMES);
 			player.sendTitlePart(TitlePart.TITLE, title);
 			player.sendTitlePart(TitlePart.SUBTITLE, subtitle);

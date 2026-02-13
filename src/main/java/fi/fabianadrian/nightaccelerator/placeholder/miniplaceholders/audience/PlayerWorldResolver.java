@@ -1,6 +1,5 @@
 package fi.fabianadrian.nightaccelerator.placeholder.miniplaceholders.audience;
 
-import fi.fabianadrian.nightaccelerator.placeholder.Placeholders;
 import fi.fabianadrian.nightaccelerator.world.SleepWorld;
 import fi.fabianadrian.nightaccelerator.world.WorldManager;
 import io.github.miniplaceholders.api.resolver.AudienceTagResolver;
@@ -11,21 +10,21 @@ import org.bukkit.entity.Player;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
-public abstract class AudienceSleepWorldPlaceholder extends Placeholders implements AudienceTagResolver<Player> {
+public abstract class PlayerWorldResolver implements AudienceTagResolver<Player> {
 	private final WorldManager worldManager;
 
-	public AudienceSleepWorldPlaceholder(WorldManager worldManager) {
+	public PlayerWorldResolver(WorldManager worldManager) {
 		this.worldManager = worldManager;
 	}
 
 	@Override
-	public @Nullable Tag tag(Player player, ArgumentQueue queue, @NonNull Context context) {
+	public @Nullable Tag tag(Player player, @NonNull ArgumentQueue queue, @NonNull Context context) {
 		SleepWorld world = this.worldManager.world(player.getWorld().getUID());
 		if (world == null) {
 			return Tag.preProcessParsed("Night acceleration isn't enabled on this world");
 		}
-		return resolve(world);
+		return resolve(world, player);
 	}
 
-	protected abstract Tag resolve(SleepWorld world);
+	protected abstract Tag resolve(SleepWorld world, Player player);
 }

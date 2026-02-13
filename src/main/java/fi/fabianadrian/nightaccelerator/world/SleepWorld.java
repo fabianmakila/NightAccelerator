@@ -8,8 +8,12 @@ import org.bukkit.GameMode;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public final class SleepWorld {
 	private final List<Player> sleeping = new ArrayList<>();
@@ -70,5 +74,14 @@ public final class SleepWorld {
 
 	public boolean isNightOver() {
 		return !nightRange().isInRange(this.world.getTime());
+	}
+
+	public String time(Locale locale) {
+		int worldTime = (int) world.getTime() + 6000;
+		int hours = (worldTime / 1000) % 24; // Each 1000 ticks = 1 hour
+		int minutes = (worldTime % 1000) * 60 / 1000; // Convert remaining ticks to minutes
+		LocalTime time = LocalTime.of(hours, minutes);
+		DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT).withLocale(locale);
+		return formatter.format(time);
 	}
 }

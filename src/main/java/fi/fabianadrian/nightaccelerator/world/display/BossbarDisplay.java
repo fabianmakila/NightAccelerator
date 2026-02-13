@@ -2,7 +2,7 @@ package fi.fabianadrian.nightaccelerator.world.display;
 
 import fi.fabianadrian.nightaccelerator.NightAccelerator;
 import fi.fabianadrian.nightaccelerator.config.section.BossbarSection;
-import fi.fabianadrian.nightaccelerator.placeholder.TagResolverFactory;
+import fi.fabianadrian.nightaccelerator.tagresolver.TagResolverFactory;
 import fi.fabianadrian.nightaccelerator.world.SleepWorld;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
@@ -42,6 +42,6 @@ public final class BossbarDisplay implements Display {
 	}
 
 	private Component name() {
-		return NightAccelerator.MINI_MESSAGE.deserialize(this.config.title(), this.resolverFactory.global(this.world));
+		return NightAccelerator.MINI_MESSAGE.deserialize(this.config.title(), this.resolverFactory.resolver(this.world));
 	}
 }
