@@ -15,7 +15,7 @@ public final class TagResolverFactory {
 
 	public TagResolver resolver(SleepWorld world) {
 		var builder = TagResolver.builder().resolvers(
-				Placeholder.unparsed("sleeping", String.valueOf(world.sleeping())),
+				Placeholder.unparsed("sleeping", String.valueOf(world.sleeping().size())),
 				Placeholder.unparsed("max", String.valueOf(world.max()))
 		).tag("time", ((queue, context) -> {
 			Locale locale;
