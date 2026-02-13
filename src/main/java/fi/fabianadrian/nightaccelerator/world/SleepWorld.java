@@ -1,6 +1,8 @@
 package fi.fabianadrian.nightaccelerator.world;
 
 import fi.fabianadrian.nightaccelerator.NightAccelerator;
+import fi.fabianadrian.nightaccelerator.config.MainConfig;
+import fi.fabianadrian.nightaccelerator.config.section.WeatherSection;
 import fi.fabianadrian.nightaccelerator.night.NightRange;
 import fi.fabianadrian.nightaccelerator.world.acceleration.AccelerationManager;
 import fi.fabianadrian.nightaccelerator.world.display.DisplayManager;
@@ -14,18 +16,22 @@ import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 
 public final class SleepWorld {
+	private static final Random RANDOM = new Random();
 	private final List<Player> sleeping = new ArrayList<>();
 	private final World world;
 	private final AccelerationManager accelerationManager;
 	private final DisplayManager displayManager;
+	private final MainConfig config;
 	private int max = 0;
 
 	public SleepWorld(NightAccelerator plugin, World world) {
 		this.world = world;
 		this.accelerationManager = new AccelerationManager(plugin, this);
 		this.displayManager = new DisplayManager(plugin, this);
+		this.config = plugin.config();
 	}
 
 	public void shutdown() {
@@ -35,8 +41,11 @@ public final class SleepWorld {
 
 	public void recalculate() {
 		this.max = 0;
-		this.sleeping.clear();
+		if (!this.sleeping.isEmpty() && isNightOver()) {
+			onPostNight();
+		}
 
+		this.sleeping.clear();
 		for (Player player : this.world.getPlayers()) {
 			if (player.getGameMode() == GameMode.SPECTATOR) {
 				continue;
@@ -83,5 +92,12 @@ public final class SleepWorld {
 		LocalTime time = LocalTime.of(hours, minutes);
 		DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT).withLocale(locale);
 		return formatter.format(time);
+	}
+
+	private void onPostNight() {
+		WeatherSection weatherConfig = this.config.weather();
+		if (weatherConfig.clearEnabled() && !this.world().isClearWeather()) {
+			this.world().setClearWeatherDuration(RANDOM.nextInt(weatherConfig.clearMax() - weatherConfig.clearMin() + 1) + weatherConfig.clearMin());
+		}
 	}
 }
