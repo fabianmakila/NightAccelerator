@@ -9,7 +9,8 @@ public class TagResolverFactory extends Placeholders {
 	protected TagResolver.Builder globalBuilder(SleepWorld world) {
 		return TagResolver.builder().resolvers(
 				Placeholder.unparsed("sleeping", String.valueOf(sleeping(world))),
-				Placeholder.unparsed("max", String.valueOf(max(world)))
+				Placeholder.unparsed("max", String.valueOf(max(world))),
+				Placeholder.unparsed("time", time(world.world()))
 		);
 	}
 
