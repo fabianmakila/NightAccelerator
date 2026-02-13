@@ -14,6 +14,8 @@ public final class MiniPlaceholdersExpansion {
 	public MiniPlaceholdersExpansion(NightAccelerator plugin) {
 		WorldManager manager = plugin.worldManager();
 		this.expansion = Expansion.builder("nightaccelator")
+				.author("FabianAdrian")
+				.version("1.0.0")
 				.audiencePlaceholder(Player.class, "time", new PlayerWorldTimeResolver(manager))
 				.audiencePlaceholder(Player.class, "sleeping", new PlayerWorldSleepingResolver(manager))
 				.audiencePlaceholder(Player.class, "max", new PlayerWorldMaxResolver(manager))

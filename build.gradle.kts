@@ -13,10 +13,8 @@ description = "Night go wrooom"
 
 repositories {
 	mavenCentral()
-	maven {
-		name = "papermc"
-		url = uri("https://repo.papermc.io/repository/maven-public/")
-	}
+	maven("https://repo.papermc.io/repository/maven-public/")
+	maven("https://repo.helpch.at/releases/") // PlaceholderAPI
 }
 
 java.toolchain.languageVersion.set(JavaLanguageVersion.of(21))
@@ -33,6 +31,7 @@ tasks {
 dependencies {
 	compileOnly("io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT")
 	compileOnly("io.github.miniplaceholders:miniplaceholders-api:3.1.0")
+	compileOnly("me.clip:placeholderapi:2.12.2")
 	implementation("space.arim.dazzleconf:dazzleconf-toml:2.0.0-M2")
 }
 
@@ -43,6 +42,10 @@ paperPluginYaml {
 	dependencies {
 		server {
 			register("MiniPlaceholders") {
+				required = false
+				load = Load.BEFORE
+			}
+			register("PlaceholderAPI") {
 				required = false
 				load = Load.BEFORE
 			}

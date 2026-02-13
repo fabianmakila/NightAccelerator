@@ -3,6 +3,7 @@ package fi.fabianadrian.nightaccelerator.world;
 import fi.fabianadrian.nightaccelerator.NightAccelerator;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.List;
@@ -34,6 +35,10 @@ public final class WorldManager {
 
 	public SleepWorld world(UUID uuid) {
 		return this.worlds.get(uuid);
+	}
+
+	public SleepWorld world(Player player) {
+		return world(player.getWorld().getUID());
 	}
 
 	public void recalculate(World world) {

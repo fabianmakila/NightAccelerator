@@ -19,7 +19,7 @@ public abstract class PlayerWorldResolver implements AudienceTagResolver<Player>
 
 	@Override
 	public @Nullable Tag tag(Player player, @NonNull ArgumentQueue queue, @NonNull Context context) {
-		SleepWorld world = this.worldManager.world(player.getWorld().getUID());
+		SleepWorld world = this.worldManager.world(player);
 		if (world == null) {
 			return Tag.preProcessParsed("Night acceleration isn't enabled on this world");
 		}

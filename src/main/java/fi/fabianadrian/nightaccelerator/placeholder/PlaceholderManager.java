@@ -18,7 +18,7 @@ public final class PlaceholderManager {
 			this.plugin.resolverFactory().registerMiniPlaceholders();
 		}
 		if (manager.isPluginEnabled("PlaceholderAPI")) {
-			//TODO PAPI Integration
+			new PAPIExpansion(this.plugin).register();
 		}
 	}
 }
