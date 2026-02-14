@@ -18,7 +18,7 @@ import static io.papermc.paper.command.brigadier.Commands.literal;
 
 public final class NightAcceleratorCommand {
 	private static final Component COMPONENT_PREFIX = MiniMessage.miniMessage().deserialize(
-			"<#111827>[<#60a5fa>NightAccelerator</#60a5fa>]</#111827> "
+			"[<#60a5fa>NightAccelerator</#60a5fa>] "
 	);
 	private static final Component COMPONENT_RELOAD_SUCCESS = COMPONENT_PREFIX.append(Component.translatable(
 			"nightaccelerator.command.reload.success", NamedTextColor.GREEN
@@ -54,6 +54,7 @@ public final class NightAcceleratorCommand {
 			this.plugin.load();
 			ctx.getSource().getSender().sendMessage(COMPONENT_RELOAD_SUCCESS);
 		} catch (Throwable e) {
+			this.plugin.getSLF4JLogger().error("Couldn't reload plugin", e);
 			ctx.getSource().getSender().sendMessage(COMPONENT_RELOAD_FAILURE);
 		}
 

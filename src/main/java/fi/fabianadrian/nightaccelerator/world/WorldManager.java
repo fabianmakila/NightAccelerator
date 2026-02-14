@@ -28,7 +28,9 @@ public final class WorldManager {
 				this.plugin.getSLF4JLogger().warn("Please check configuration! Couldn't find a world named {}", worldName);
 				return;
 			}
-			this.worlds.put(world.getUID(), new SleepWorld(plugin, world));
+			SleepWorld sleepWorld = new SleepWorld(this.plugin, world);
+			sleepWorld.recalculate();
+			this.worlds.put(world.getUID(), sleepWorld);
 		});
 	}
 

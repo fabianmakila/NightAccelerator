@@ -41,7 +41,9 @@ public final class AccelerationManager {
 	}
 
 	public void shutdown() {
-		this.bukkitTask.cancel();
+		if (this.bukkitTask != null) {
+			this.bukkitTask.cancel();
+		}
 	}
 
 	private double interpolate(double min, double max, double normalizedValue, double curveFactor) {
