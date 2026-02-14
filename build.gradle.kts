@@ -24,7 +24,15 @@ tasks {
 		options.encoding = Charsets.UTF_8.name()
 	}
 	build {
-		dependsOn(spotlessApply)
+		dependsOn(spotlessApply, shadowJar)
+	}
+	shadowJar {
+		sequenceOf(
+			"org.bstats",
+			"space.arim.dazzleconf"
+		).forEach { pkg ->
+			relocate(pkg, "fi.fabianadrian.nightaccelerator.dependency.$pkg")
+		}
 	}
 }
 
