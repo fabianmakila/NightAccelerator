@@ -9,6 +9,7 @@ import fi.fabianadrian.nightaccelerator.placeholder.PlaceholderManager;
 import fi.fabianadrian.nightaccelerator.tagresolver.TagResolverFactory;
 import fi.fabianadrian.nightaccelerator.world.WorldManager;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -31,6 +32,8 @@ public final class NightAccelerator extends JavaPlugin {
 		registerListeners();
 
 		this.placeholderManager.register();
+
+		new Metrics(this, 29528);
 	}
 
 	public void load() {
