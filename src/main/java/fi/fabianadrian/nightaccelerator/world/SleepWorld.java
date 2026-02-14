@@ -2,7 +2,7 @@ package fi.fabianadrian.nightaccelerator.world;
 
 import fi.fabianadrian.nightaccelerator.NightAccelerator;
 import fi.fabianadrian.nightaccelerator.config.MainConfig;
-import fi.fabianadrian.nightaccelerator.config.section.WeatherSection;
+import fi.fabianadrian.nightaccelerator.config.section.MorningSection;
 import fi.fabianadrian.nightaccelerator.night.NightRange;
 import fi.fabianadrian.nightaccelerator.world.acceleration.AccelerationManager;
 import fi.fabianadrian.nightaccelerator.world.display.DisplayManager;
@@ -95,9 +95,13 @@ public final class SleepWorld {
 	}
 
 	private void onPostNight() {
-		WeatherSection weatherConfig = this.config.weather();
-		if (weatherConfig.clearEnabled() && !this.world().isClearWeather()) {
-			this.world().setClearWeatherDuration(RANDOM.nextInt(weatherConfig.clearMax() - weatherConfig.clearMin() + 1) + weatherConfig.clearMin());
+		MorningSection morningConfig = this.config.morning();
+		if (morningConfig.clearWeather() && !this.world().isClearWeather()) {
+			this.world().setClearWeatherDuration(RANDOM.nextInt(morningConfig.clearMax() - morningConfig.clearMin() + 1) + morningConfig.clearMin());
+		}
+		String sound = morningConfig.sound();
+		if (!sound.isEmpty()) {
+			this.sleeping.forEach(player -> player.playSound(player, sound, morningConfig.soundVolume(), morningConfig.soundPitch()));
 		}
 	}
 }
