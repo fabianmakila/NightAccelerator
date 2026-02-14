@@ -34,6 +34,10 @@ public final class DisplayManager {
 		this.displays.forEach(Display::shutdown);
 	}
 
+	public void morning() {
+		this.displays.forEach(Display::morning);
+	}
+
 	private void update() {
 		Bukkit.getScheduler().runTask(this.plugin, () -> this.displays.forEach(Display::update));
 	}

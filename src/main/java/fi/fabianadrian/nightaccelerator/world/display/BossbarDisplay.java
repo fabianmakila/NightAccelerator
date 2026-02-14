@@ -41,6 +41,11 @@ public final class BossbarDisplay implements Display {
 		this.bossBar.removeViewer(this.server);
 	}
 
+	@Override
+	public void morning() {
+
+	}
+
 	private Component name() {
 		return NightAccelerator.MINI_MESSAGE.deserialize(this.config.title(), this.resolverFactory.resolver(this.world));
 	}

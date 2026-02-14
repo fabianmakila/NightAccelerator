@@ -25,19 +25,28 @@ public final class TitleDisplay implements Display {
 
 	@Override
 	public void update() {
-		this.world.sleeping().forEach(player -> {
-			TagResolver tagResolver = this.resolverFactory.resolver(this.world);
-
-			Component title = NightAccelerator.MINI_MESSAGE.deserialize(this.config.title(), player, tagResolver);
-			Component subtitle = NightAccelerator.MINI_MESSAGE.deserialize(this.config.subtitle(), player, tagResolver);
-			player.sendTitlePart(TitlePart.TIMES, TIMES);
-			player.sendTitlePart(TitlePart.TITLE, title);
-			player.sendTitlePart(TitlePart.SUBTITLE, subtitle);
-		});
+		sendTitle(this.config.sleepingTitle(), this.config.sleepingSubtitle());
 	}
 
 	@Override
 	public void shutdown() {
 
+	}
+
+	@Override
+	public void morning() {
+		sendTitle(this.config.morningTitle(), this.config.morningSubtitle());
+	}
+
+	private void sendTitle(String titleString, String subtitleString) {
+		this.world.sleeping().forEach(player -> {
+			TagResolver tagResolver = this.resolverFactory.resolver(this.world);
+
+			Component title = NightAccelerator.MINI_MESSAGE.deserialize(titleString, player, tagResolver);
+			Component subtitle = NightAccelerator.MINI_MESSAGE.deserialize(subtitleString, player, tagResolver);
+			player.sendTitlePart(TitlePart.TIMES, TIMES);
+			player.sendTitlePart(TitlePart.TITLE, title);
+			player.sendTitlePart(TitlePart.SUBTITLE, subtitle);
+		});
 	}
 }

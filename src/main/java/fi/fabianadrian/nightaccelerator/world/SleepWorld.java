@@ -43,6 +43,7 @@ public final class SleepWorld {
 		this.max = 0;
 		if (!this.sleeping.isEmpty() && isNightOver()) {
 			onPostNight();
+			this.displayManager.morning();
 		}
 
 		this.sleeping.clear();

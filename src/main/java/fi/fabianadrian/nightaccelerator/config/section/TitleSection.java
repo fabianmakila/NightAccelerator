@@ -8,12 +8,22 @@ public interface TitleSection {
 	}
 
 	@Comments("Available placeholders: <sleeping> <max> <time>")
-	default String title() {
+	default String sleepingTitle() {
 		return "<time>";
 	}
 
 	@Comments("Available placeholders: <sleeping> <max> <time>")
-	default String subtitle() {
+	default String sleepingSubtitle() {
 		return "<lang:sleep.players_sleeping:'<sleeping>':'<max>'>";
+	}
+
+	@Comments("Available placeholders: <sleeping> <max> <time>")
+	default String morningTitle() {
+		return "<time>";
+	}
+
+	@Comments("Available placeholders: <sleeping> <max> <time>")
+	default String morningSubtitle() {
+		return "Good morning, <name>";
 	}
 }
