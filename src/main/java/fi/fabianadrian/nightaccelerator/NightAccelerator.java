@@ -1,10 +1,12 @@
 package fi.fabianadrian.nightaccelerator;
 
+import fi.fabianadrian.nightaccelerator.command.NightAcceleratorCommand;
 import fi.fabianadrian.nightaccelerator.config.ConfigManager;
 import fi.fabianadrian.nightaccelerator.config.MainConfig;
 import fi.fabianadrian.nightaccelerator.listener.BedListener;
 import fi.fabianadrian.nightaccelerator.listener.PlayerListener;
 import fi.fabianadrian.nightaccelerator.listener.ServerListener;
+import fi.fabianadrian.nightaccelerator.locale.TranslationManager;
 import fi.fabianadrian.nightaccelerator.placeholder.PlaceholderManager;
 import fi.fabianadrian.nightaccelerator.tagresolver.TagResolverFactory;
 import fi.fabianadrian.nightaccelerator.world.WorldManager;
@@ -22,17 +24,16 @@ public final class NightAccelerator extends JavaPlugin {
 	private final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 	private final PlaceholderManager placeholderManager = new PlaceholderManager(this);
 	private final TagResolverFactory resolverFactory = new TagResolverFactory();
+	private final WorldManager worldManager = new WorldManager(this);
 	private ConfigManager configManager;
-	private WorldManager worldManager;
 
 	@Override
 	public void onEnable() {
+		new TranslationManager(getSLF4JLogger());
 		this.configManager = new ConfigManager(this);
-		this.worldManager = new WorldManager(this);
 		registerListeners();
-
+		new NightAcceleratorCommand(this).register();
 		this.placeholderManager.register();
-
 		new Metrics(this, 29528);
 	}
 
