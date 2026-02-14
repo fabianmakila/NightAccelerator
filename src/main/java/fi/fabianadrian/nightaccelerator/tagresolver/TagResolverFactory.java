@@ -6,6 +6,7 @@ import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 
 public final class TagResolverFactory {
+	private final TagResolver pointeredResolver = new PointeredResolver();
 	private boolean miniPlaceholders = false;
 
 	private TagResolver.Builder builder(SleepWorld world) {
@@ -13,7 +14,7 @@ public final class TagResolverFactory {
 				Placeholder.unparsed("sleeping", String.valueOf(world.sleeping().size())),
 				Placeholder.unparsed("max", String.valueOf(world.max())),
 				new TimeTagResolver(world),
-				new PointeredResolver()
+				this.pointeredResolver
 		);
 	}
 
