@@ -48,7 +48,7 @@ public final class SleepWorld {
 
 		this.sleeping.clear();
 		for (Player player : this.world.getPlayers()) {
-			if (player.getGameMode() == GameMode.SPECTATOR) {
+			if (player.getGameMode() == GameMode.SPECTATOR || player.isSleepingIgnored()) {
 				continue;
 			}
 
