@@ -32,12 +32,20 @@ public final class LocaleLiaison implements TypeLiaison {
 					if (result.isFailure()) {
 						return LoadResult.failure(result.getErrorContexts());
 					}
-					return LoadResult.of(Locale.forLanguageTag(result.getOrThrow()));
+					String value = result.getOrThrow();
+					if ("default".equalsIgnoreCase(value)) {
+						return LoadResult.of(Locale.getDefault());
+					}
+					return LoadResult.of(Locale.forLanguageTag(value));
 				}
 
 				@Override
 				public void serialize(@NotNull Locale value, @NonNull SerializeOutput ser) {
-					ser.outString(value.toLanguageTag());
+					if (value.equals(Locale.getDefault())) {
+						ser.outString("default");
+					} else {
+						ser.outString(value.toLanguageTag());
+					}
 				}
 			};
 		}

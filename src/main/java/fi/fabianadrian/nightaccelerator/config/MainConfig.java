@@ -14,7 +14,7 @@ public interface MainConfig {
 	}
 
 	default Locale defaultLocale() {
-		return Locale.ENGLISH;
+		return Locale.getDefault();
 	}
 
 	@SubSection
