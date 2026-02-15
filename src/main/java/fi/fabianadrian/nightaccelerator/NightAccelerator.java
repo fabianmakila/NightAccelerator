@@ -39,6 +39,7 @@ public final class NightAccelerator extends JavaPlugin {
 
 	public void load() {
 		this.configManager.load();
+		this.resolverFactory.defaultLocale(this.config().defaultLocale());
 		this.worldManager.load();
 	}
 

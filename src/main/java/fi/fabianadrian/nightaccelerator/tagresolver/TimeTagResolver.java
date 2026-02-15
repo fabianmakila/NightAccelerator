@@ -9,25 +9,27 @@ import net.kyori.adventure.text.minimessage.tag.Tag;
 import net.kyori.adventure.text.minimessage.tag.resolver.ArgumentQueue;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 
 import java.util.Locale;
 
 public final class TimeTagResolver implements TagResolver {
 	private final SleepWorld world;
+	private final Locale defaultLocale;
 
-	public TimeTagResolver(SleepWorld world) {
+	public TimeTagResolver(SleepWorld world, Locale defaultLocale) {
 		this.world = world;
+		this.defaultLocale = defaultLocale;
 	}
 
 	@Override
-	public @Nullable Tag resolve(@NotNull String name, @NotNull ArgumentQueue arguments, @NotNull Context context) throws ParsingException {
+	public @NonNull Tag resolve(@NotNull String name, @NotNull ArgumentQueue arguments, @NotNull Context context) throws ParsingException {
 		Locale locale;
 		Pointered pointered = context.target();
 		if (pointered == null) {
-			locale = Locale.getDefault();
+			locale = this.defaultLocale;
 		} else {
-			locale = pointered.getOrDefault(Identity.LOCALE, Locale.getDefault());
+			locale = pointered.getOrDefault(Identity.LOCALE, this.defaultLocale);
 		}
 		return Tag.preProcessParsed(this.world.time(locale));
 	}

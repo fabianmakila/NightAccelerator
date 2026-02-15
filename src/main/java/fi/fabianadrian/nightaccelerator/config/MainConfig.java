@@ -6,10 +6,15 @@ import fi.fabianadrian.nightaccelerator.config.section.MorningSection;
 import space.arim.dazzleconf.engine.liaison.SubSection;
 
 import java.util.List;
+import java.util.Locale;
 
 public interface MainConfig {
 	default List<String> enabledWorlds() {
 		return List.of("world");
+	}
+
+	default Locale defaultLocale() {
+		return Locale.ENGLISH;
 	}
 
 	@SubSection

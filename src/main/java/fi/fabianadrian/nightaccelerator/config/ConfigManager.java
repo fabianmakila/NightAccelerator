@@ -1,6 +1,7 @@
 package fi.fabianadrian.nightaccelerator.config;
 
 import fi.fabianadrian.nightaccelerator.NightAccelerator;
+import fi.fabianadrian.nightaccelerator.config.liaison.LocaleLiaison;
 import org.slf4j.Logger;
 import space.arim.dazzleconf.Configuration;
 import space.arim.dazzleconf.StandardErrorPrint;
@@ -24,7 +25,7 @@ public final class ConfigManager {
 		this.dataDirectory = plugin.getDataPath();
 		this.logger = plugin.getSLF4JLogger();
 
-		this.configuration = Configuration.defaultBuilder(MainConfig.class).build();
+		this.configuration = Configuration.defaultBuilder(MainConfig.class).addTypeLiaisons(new LocaleLiaison()).build();
 		this.backend = new TomlBackend(new PathRoot(this.dataDirectory.resolve("config.toml")));
 		this.errorPrint = new StandardErrorPrint(output -> this.logger.error(output.printString()));
 	}
