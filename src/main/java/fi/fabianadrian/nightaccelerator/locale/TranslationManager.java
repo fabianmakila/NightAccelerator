@@ -18,18 +18,10 @@ public final class TranslationManager {
 
 	public TranslationManager(Logger logger) {
 		this.logger = logger;
-
 		this.translationStore = TranslationStore.messageFormat(Key.key("nightaccelerator", "main"));
-
-		loadFromResourceBundle();
-
-		GlobalTranslator.translator().addSource(this.translationStore);
 	}
 
-	/**
-	 * Loads the bundled translations from the jar file.
-	 */
-	private void loadFromResourceBundle() {
+	public void load() {
 		try {
 			BUNDLED_LOCALES.forEach(locale -> {
 				ResourceBundle bundle = ResourceBundle.getBundle("messages", locale, UTF8ResourceBundleControl.utf8ResourceBundleControl());
@@ -38,5 +30,6 @@ public final class TranslationManager {
 		} catch (IllegalArgumentException e) {
 			this.logger.warn("Error loading default locale file", e);
 		}
+		GlobalTranslator.translator().addSource(this.translationStore);
 	}
 }

@@ -21,16 +21,18 @@ import java.util.concurrent.ScheduledExecutorService;
 
 public final class NightAccelerator extends JavaPlugin {
 	public static final MiniMessage MINI_MESSAGE = MiniMessage.miniMessage();
-	private final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+	private final ConfigManager configManager = new ConfigManager(this);
 	private final PlaceholderManager placeholderManager = new PlaceholderManager(this);
+	private final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 	private final TagResolverFactory resolverFactory = new TagResolverFactory();
 	private final WorldManager worldManager = new WorldManager(this);
-	private ConfigManager configManager;
+
+	public NightAccelerator() {
+		new TranslationManager(getSLF4JLogger()).load();
+	}
 
 	@Override
 	public void onEnable() {
-		new TranslationManager(getSLF4JLogger());
-		this.configManager = new ConfigManager(this);
 		registerListeners();
 		new NightAcceleratorCommand(this).register();
 		this.placeholderManager.register();
