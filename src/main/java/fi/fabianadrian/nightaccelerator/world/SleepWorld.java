@@ -16,15 +16,14 @@ import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Random;
 
 public final class SleepWorld {
-	private static final Random RANDOM = new Random();
 	private final List<Player> sleeping = new ArrayList<>();
 	private final World world;
 	private final AccelerationManager accelerationManager;
 	private final DisplayManager displayManager;
 	private final MainConfig config;
+	private final WeatherManager weatherManager;
 	private int max = 0;
 
 	public SleepWorld(NightAccelerator plugin, World world) {
@@ -32,6 +31,7 @@ public final class SleepWorld {
 		this.accelerationManager = new AccelerationManager(plugin, this);
 		this.displayManager = new DisplayManager(plugin, this);
 		this.config = plugin.config();
+		this.weatherManager = new WeatherManager(world);
 	}
 
 	public void shutdown() {
@@ -97,8 +97,8 @@ public final class SleepWorld {
 
 	private void onPostNight() {
 		MorningSection morningConfig = this.config.morning();
-		if (morningConfig.clearWeather() && !this.world().isClearWeather()) {
-			this.world().setClearWeatherDuration(RANDOM.nextInt(morningConfig.clearMax() - morningConfig.clearMin() + 1) + morningConfig.clearMin());
+		if (morningConfig.clearWeather()) {
+			this.weatherManager.clear();
 		}
 		String sound = morningConfig.sound();
 		if (!sound.isEmpty()) {

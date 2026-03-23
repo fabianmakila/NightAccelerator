@@ -9,16 +9,6 @@ public interface MorningSection {
 		return true;
 	}
 
-	@Comments("Minimum clear weather time in ticks")
-	default int clearMin() {
-		return 12000;
-	}
-
-	@Comments("Maximum clear weather time in ticks")
-	default int clearMax() {
-		return 180000;
-	}
-
 	@Comments("Sound to play when a player wakes up")
 	@Comments("Leave empty to disable")
 	default String sound() {
