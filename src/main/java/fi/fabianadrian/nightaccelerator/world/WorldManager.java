@@ -34,12 +34,12 @@ public final class WorldManager {
 		});
 	}
 
-	public SleepWorld world(UUID uuid) {
-		return this.worlds.get(uuid);
+	public SleepWorld world(World world) {
+		return this.worlds.get(world.getUID());
 	}
 
 	public SleepWorld world(Player player) {
-		return world(player.getWorld().getUID());
+		return world(player.getWorld());
 	}
 
 	public void recalculate(World world) {

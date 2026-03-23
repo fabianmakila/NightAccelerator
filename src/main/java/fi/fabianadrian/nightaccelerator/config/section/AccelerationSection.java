@@ -1,5 +1,6 @@
 package fi.fabianadrian.nightaccelerator.config.section;
 
+import fi.fabianadrian.nightaccelerator.world.acceleration.AccelerateWeather;
 import space.arim.dazzleconf.engine.Comments;
 import space.arim.dazzleconf.engine.liaison.IntegerRange;
 
@@ -22,5 +23,9 @@ public interface AccelerationSection {
 
 	default double factor() {
 		return 1.0;
+	}
+
+	default AccelerateWeather accelerateWeather() {
+		return AccelerateWeather.NONE;
 	}
 }

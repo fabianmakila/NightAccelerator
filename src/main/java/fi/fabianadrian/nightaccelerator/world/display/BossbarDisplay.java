@@ -33,7 +33,7 @@ public final class BossbarDisplay implements Display {
 
 		this.bossBar.addViewer(this.server);
 		this.bossBar.name(name());
-		this.bossBar.progress(this.world.nightProgress());
+		this.bossBar.progress(this.world.sleepProgress());
 	}
 
 	@Override

@@ -56,7 +56,7 @@ public final class PAPIExpansion extends PlaceholderExpansion {
 				return String.valueOf(world.max());
 			}
 			case "time" -> {
-				return world.time(player.locale());
+				return world.formattedTime(player.locale());
 			}
 		}
 		return null;

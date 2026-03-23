@@ -17,7 +17,7 @@ public final class AccelerationManager {
 	public AccelerationManager(NightAccelerator plugin, SleepWorld sleepWorld) {
 		this.plugin = plugin;
 		this.sleepWorld = sleepWorld;
-		this.accelerateTask = new AccelerateTask(sleepWorld.world());
+		this.accelerateTask = new AccelerateTask(sleepWorld.world(), plugin.config().acceleration().accelerateWeather());
 	}
 
 	public void recalculate() {
@@ -33,7 +33,7 @@ public final class AccelerationManager {
 
 		double sleepingPlayersRatio = (double) this.sleepWorld.sleeping().size() / this.sleepWorld.max();
 		long ticksToAdd = (long) interpolate(config.min(), config.max(), sleepingPlayersRatio, config.factor());
-		this.accelerateTask.ticksToAdd(ticksToAdd);
+		this.accelerateTask.ticksToAdvance(ticksToAdd);
 
 		if (this.bukkitTask == null) {
 			this.bukkitTask = this.scheduler.runTaskTimer(this.plugin, this.accelerateTask, 0, config.updateRate());

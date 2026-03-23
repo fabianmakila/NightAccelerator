@@ -6,6 +6,7 @@ import fi.fabianadrian.nightaccelerator.config.MainConfig;
 import fi.fabianadrian.nightaccelerator.listener.BedListener;
 import fi.fabianadrian.nightaccelerator.listener.PlayerListener;
 import fi.fabianadrian.nightaccelerator.listener.ServerListener;
+import fi.fabianadrian.nightaccelerator.listener.ThunderListener;
 import fi.fabianadrian.nightaccelerator.locale.TranslationManager;
 import fi.fabianadrian.nightaccelerator.placeholder.PlaceholderManager;
 import fi.fabianadrian.nightaccelerator.tagresolver.TagResolverFactory;
@@ -66,7 +67,8 @@ public final class NightAccelerator extends JavaPlugin {
 		List.of(
 				new BedListener(this),
 				new PlayerListener(this),
-				new ServerListener(this)
+				new ServerListener(this),
+				new ThunderListener(this)
 		).forEach(listener -> manager.registerEvents(listener, this));
 	}
 }

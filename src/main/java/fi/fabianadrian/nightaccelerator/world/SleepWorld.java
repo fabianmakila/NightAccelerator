@@ -3,7 +3,7 @@ package fi.fabianadrian.nightaccelerator.world;
 import fi.fabianadrian.nightaccelerator.NightAccelerator;
 import fi.fabianadrian.nightaccelerator.config.MainConfig;
 import fi.fabianadrian.nightaccelerator.config.section.MorningSection;
-import fi.fabianadrian.nightaccelerator.night.NightRange;
+import fi.fabianadrian.nightaccelerator.night.SleepWindow;
 import fi.fabianadrian.nightaccelerator.world.acceleration.AccelerationManager;
 import fi.fabianadrian.nightaccelerator.world.display.DisplayManager;
 import org.bukkit.GameMode;
@@ -25,6 +25,7 @@ public final class SleepWorld {
 	private final MainConfig config;
 	private final WeatherManager weatherManager;
 	private int max = 0;
+	private long thunderStartedAt = 0;
 
 	public SleepWorld(NightAccelerator plugin, World world) {
 		this.world = world;
@@ -74,25 +75,52 @@ public final class SleepWorld {
 		return this.world;
 	}
 
-	public NightRange nightRange() {
-		return this.world.isClearWeather() ? NightRange.CLEAR : NightRange.RAIN;
+	/**
+	 * @return A float between 0 and 1 indicating the sleep progress
+	 */
+	public float sleepProgress() {
+		SleepWindow window = this.world.isClearWeather() ? SleepWindow.CLEAR : SleepWindow.RAIN;
+
+		long start = this.world.isThundering() ? this.thunderStartedAt : window.start;
+		long end = window.end;
+		if (this.world.isThundering() && !this.config.morning().clearWeather()) {
+			end = (this.world.getTime() + this.world.getThunderDuration()) % 24000;
+		}
+
+		long time = this.world.getTime();
+
+		long relativeTime = wrapAroundDifference(start, time);
+		long duration = wrapAroundDifference(start, end);
+
+		if (duration == 0) {
+			return 1;
+		}
+
+		return Math.min(1f, (float) relativeTime / duration);
 	}
 
-	public float nightProgress() {
-		return nightRange().progress(this.world.getTime());
+	/**
+	 * @return The positive difference from start to now, wrapping over 24000 ticks.
+	 */
+	private long wrapAroundDifference(long start, long now) {
+		return (now - start + 24000) % 24000;
 	}
 
 	public boolean isNightOver() {
-		return !nightRange().isInRange(this.world.getTime());
+		return sleepProgress() >= 1;
 	}
 
-	public String time(Locale locale) {
+	public String formattedTime(Locale locale) {
 		int worldTime = (int) world.getTime() + 6000;
 		int hours = (worldTime / 1000) % 24; // Each 1000 ticks = 1 hour
 		int minutes = (worldTime % 1000) * 60 / 1000; // Convert remaining ticks to minutes
 		LocalTime time = LocalTime.of(hours, minutes);
 		DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT).withLocale(locale);
 		return formatter.format(time);
+	}
+
+	public void thunderStarted() {
+		this.thunderStartedAt = this.world.getTime();
 	}
 
 	private void onPostNight() {

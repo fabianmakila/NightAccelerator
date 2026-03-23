@@ -13,6 +13,6 @@ public final class PlayerWorldTimeResolver extends PlayerWorldResolver {
 
 	@Override
 	protected Tag resolve(SleepWorld world, Player player) {
-		return Tag.preProcessParsed(world.time(player.locale()));
+		return Tag.preProcessParsed(world.formattedTime(player.locale()));
 	}
 }

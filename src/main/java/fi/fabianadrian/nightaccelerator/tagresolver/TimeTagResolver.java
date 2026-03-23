@@ -31,7 +31,7 @@ public final class TimeTagResolver implements TagResolver {
 		} else {
 			locale = pointered.getOrDefault(Identity.LOCALE, this.defaultLocale);
 		}
-		return Tag.preProcessParsed(this.world.time(locale));
+		return Tag.preProcessParsed(this.world.formattedTime(locale));
 	}
 
 	@Override
