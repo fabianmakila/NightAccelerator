@@ -17,7 +17,7 @@ repositories {
 	maven("https://repo.helpch.at/releases/") // PlaceholderAPI
 }
 
-java.toolchain.languageVersion.set(JavaLanguageVersion.of(21))
+java.toolchain.languageVersion.set(JavaLanguageVersion.of(25))
 
 tasks {
 	compileJava {
@@ -37,7 +37,7 @@ tasks {
 }
 
 dependencies {
-	compileOnly("io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT")
+	compileOnly("io.papermc.paper:paper-api:26.1.2.build.+")
 	compileOnly("io.github.miniplaceholders:miniplaceholders-api:3.1.0")
 	compileOnly("me.clip:placeholderapi:2.12.2")
 	implementation("space.arim.dazzleconf:dazzleconf-toml:2.0.0-M2")
@@ -47,7 +47,7 @@ dependencies {
 paperPluginYaml {
 	main = "fi.fabianadrian.nightaccelerator.NightAccelerator"
 	author = "FabianAdrian"
-	apiVersion = "1.21.11"
+	apiVersion = "26.1"
 	dependencies {
 		server {
 			register("MiniPlaceholders") {

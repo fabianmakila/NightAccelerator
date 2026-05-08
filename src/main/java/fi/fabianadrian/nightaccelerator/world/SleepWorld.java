@@ -42,12 +42,8 @@ public final class SleepWorld {
 
 	public void recalculate() {
 		this.max = 0;
-		if (!this.sleeping.isEmpty() && isNightOver()) {
-			onPostNight();
-			this.displayManager.morning();
-		}
-
 		this.sleeping.clear();
+
 		for (Player player : this.world.getPlayers()) {
 			if (player.getGameMode() == GameMode.SPECTATOR || player.isSleepingIgnored()) {
 				continue;
@@ -106,10 +102,6 @@ public final class SleepWorld {
 		return (now - start + 24000) % 24000;
 	}
 
-	public boolean isNightOver() {
-		return sleepProgress() >= 1;
-	}
-
 	public String formattedTime(Locale locale) {
 		int worldTime = (int) world.getTime() + 6000;
 		int hours = (worldTime / 1000) % 24; // Each 1000 ticks = 1 hour
@@ -123,7 +115,9 @@ public final class SleepWorld {
 		this.thunderStartedAt = this.world.getTime();
 	}
 
-	private void onPostNight() {
+	public void onPostNight() {
+		this.displayManager.morning();
+
 		MorningSection morningConfig = this.config.morning();
 		if (morningConfig.clearWeather()) {
 			this.weatherManager.clear();

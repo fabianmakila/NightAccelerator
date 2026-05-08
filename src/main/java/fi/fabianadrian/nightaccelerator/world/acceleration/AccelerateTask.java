@@ -1,14 +1,17 @@
 package fi.fabianadrian.nightaccelerator.world.acceleration;
 
+import fi.fabianadrian.nightaccelerator.world.SleepWorld;
 import org.bukkit.World;
 
 public final class AccelerateTask implements Runnable {
 	private final World world;
 	private final AccelerateWeather accelerateWeather;
+	private final SleepWorld sleepWorld;
 	private long ticksToAdvance = 0;
 
-	public AccelerateTask(World world, AccelerateWeather accelerateWeather) {
-		this.world = world;
+	public AccelerateTask(SleepWorld sleepWorld, AccelerateWeather accelerateWeather) {
+		this.sleepWorld = sleepWorld;
+		this.world = sleepWorld.world();
 		this.accelerateWeather = accelerateWeather;
 	}
 
@@ -33,5 +36,9 @@ public final class AccelerateTask implements Runnable {
 			}
 		}
 		this.world.setTime(this.world.getTime() + this.ticksToAdvance);
+
+		if (this.sleepWorld.sleepProgress() >= 1) {
+			this.sleepWorld.onPostNight();
+		}
 	}
 }

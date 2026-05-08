@@ -17,7 +17,7 @@ public final class AccelerationManager {
 	public AccelerationManager(NightAccelerator plugin, SleepWorld sleepWorld) {
 		this.plugin = plugin;
 		this.sleepWorld = sleepWorld;
-		this.accelerateTask = new AccelerateTask(sleepWorld.world(), plugin.config().acceleration().accelerateWeather());
+		this.accelerateTask = new AccelerateTask(sleepWorld, plugin.config().acceleration().accelerateWeather());
 	}
 
 	public void recalculate() {
