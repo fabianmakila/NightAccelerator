@@ -1,8 +1,7 @@
-package fi.fabianadrian.nightaccelerator.world.display;
+package fi.fabianadrian.nightaccelerator.world.feature;
 
 import fi.fabianadrian.nightaccelerator.NightAccelerator;
 import fi.fabianadrian.nightaccelerator.config.section.TitleSection;
-import fi.fabianadrian.nightaccelerator.tagresolver.TagResolverFactory;
 import fi.fabianadrian.nightaccelerator.world.SleepWorld;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
@@ -11,36 +10,35 @@ import net.kyori.adventure.title.TitlePart;
 
 import java.time.Duration;
 
-public final class TitleDisplay implements Display {
+public final class TitleFeature extends Feature {
 	private static final Title.Times TIMES = Title.Times.times(Duration.ZERO, Duration.ofSeconds(1), Duration.ofSeconds(1));
-	private final SleepWorld world;
 	private final TitleSection config;
-	private final TagResolverFactory resolverFactory;
 
-	public TitleDisplay(NightAccelerator plugin, SleepWorld world) {
-		this.world = world;
-		this.config = plugin.config().display().title();
-		this.resolverFactory = plugin.resolverFactory();
+	public TitleFeature(NightAccelerator plugin, SleepWorld world) {
+		super(plugin, world);
+		this.config = plugin.config().title();
 	}
 
 	@Override
-	public void update() {
+	public void stop() {
+		super.stop();
+		if (super.world.sleepProgress() > 1) {
+			sendTitle(this.config.morningTitle(), this.config.morningSubtitle());
+		}
+	}
+
+	@Override
+	protected int updateRate() {
+		return this.config.updateRate();
+	}
+
+	protected void update() {
 		sendTitle(this.config.sleepingTitle(), this.config.sleepingSubtitle());
-	}
-
-	@Override
-	public void shutdown() {
-
-	}
-
-	@Override
-	public void morning() {
-		sendTitle(this.config.morningTitle(), this.config.morningSubtitle());
 	}
 
 	private void sendTitle(String titleString, String subtitleString) {
 		this.world.sleeping().forEach(player -> {
-			TagResolver tagResolver = this.resolverFactory.resolver(this.world);
+			TagResolver tagResolver = super.resolverFactory.resolver(super.world);
 
 			Component title = NightAccelerator.MINI_MESSAGE.deserialize(titleString, player, tagResolver);
 			Component subtitle = NightAccelerator.MINI_MESSAGE.deserialize(subtitleString, player, tagResolver);

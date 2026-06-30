@@ -22,4 +22,9 @@ public interface BossbarSection {
 	default BossBar.Overlay overlay() {
 		return BossBar.Overlay.PROGRESS;
 	}
+
+	@Comments("Interval in ticks how frequently bossbar will be updated")
+	default int updateRate() {
+		return 500;
+	}
 }

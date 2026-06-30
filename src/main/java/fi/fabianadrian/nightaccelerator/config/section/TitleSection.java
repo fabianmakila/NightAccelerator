@@ -26,4 +26,9 @@ public interface TitleSection {
 	default String morningSubtitle() {
 		return "Good morning, <name>";
 	}
+
+	@Comments("Interval in ticks how frequently titles will be updated")
+	default int updateRate() {
+		return 2;
+	}
 }

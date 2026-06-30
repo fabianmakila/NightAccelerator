@@ -8,13 +8,14 @@ plugins {
 }
 
 group = "fi.fabianadrian"
-version = "1.0.0"
+version = "2.0.0-SNAPSHOT"
 description = "Night go wrooom"
 
 repositories {
 	mavenCentral()
 	maven("https://repo.papermc.io/repository/maven-public/")
 	maven("https://repo.helpch.at/releases/") // PlaceholderAPI
+	maven("https://eldonexus.de/repository/maven-public/") // StrokkCommands
 }
 
 java.toolchain.languageVersion.set(JavaLanguageVersion.of(25))
@@ -27,21 +28,23 @@ tasks {
 		dependsOn(spotlessApply, shadowJar)
 	}
 	shadowJar {
-		sequenceOf(
-			"org.bstats",
-			"space.arim.dazzleconf"
-		).forEach { pkg ->
-			relocate(pkg, "fi.fabianadrian.nightaccelerator.dependency.$pkg")
-		}
+		minimize()
 	}
 }
 
 dependencies {
 	compileOnly("io.papermc.paper:paper-api:26.1.2.build.+")
-	compileOnly("io.github.miniplaceholders:miniplaceholders-api:3.1.0")
+
+	// Placeholders
+	compileOnly("io.github.miniplaceholders:miniplaceholders-api:3.2.0")
 	compileOnly("me.clip:placeholderapi:2.12.2")
+
+	// Commands
+	compileOnly("net.strokkur.commands:annotations-paper:2.1.4")
+	annotationProcessor("net.strokkur.commands:processor-paper:2.1.4")
+
+	// Misc
 	implementation("space.arim.dazzleconf:dazzleconf-toml:2.0.0-M2")
-	implementation("org.bstats:bstats-bukkit:3.1.0")
 }
 
 paperPluginYaml {

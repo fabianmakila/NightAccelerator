@@ -4,8 +4,8 @@ import fi.fabianadrian.nightaccelerator.NightAccelerator;
 import fi.fabianadrian.nightaccelerator.config.MainConfig;
 import fi.fabianadrian.nightaccelerator.config.section.MorningSection;
 import fi.fabianadrian.nightaccelerator.night.SleepWindow;
-import fi.fabianadrian.nightaccelerator.world.acceleration.AccelerationManager;
-import fi.fabianadrian.nightaccelerator.world.display.DisplayManager;
+import fi.fabianadrian.nightaccelerator.world.feature.FeatureManager;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -20,43 +20,84 @@ import java.util.Locale;
 public final class SleepWorld {
 	private final List<Player> sleeping = new ArrayList<>();
 	private final World world;
-	private final AccelerationManager accelerationManager;
-	private final DisplayManager displayManager;
 	private final MainConfig config;
 	private final WeatherManager weatherManager;
+	private final NightAccelerator plugin;
+	private final FeatureManager featureManager;
 	private int max = 0;
 	private long thunderStartedAt = 0;
+	private boolean recalculationQueued = false;
 
 	public SleepWorld(NightAccelerator plugin, World world) {
+		this.plugin = plugin;
 		this.world = world;
-		this.accelerationManager = new AccelerationManager(plugin, this);
-		this.displayManager = new DisplayManager(plugin, this);
 		this.config = plugin.config();
 		this.weatherManager = new WeatherManager(world);
-	}
+		this.featureManager = new FeatureManager(plugin, this);
 
-	public void shutdown() {
-		this.displayManager.shutdown();
-		this.accelerationManager.shutdown();
-	}
-
-	public void recalculate() {
-		this.max = 0;
-		this.sleeping.clear();
-
-		for (Player player : this.world.getPlayers()) {
-			if (player.getGameMode() == GameMode.SPECTATOR || player.isSleepingIgnored()) {
-				continue;
-			}
-
-			this.max++;
-
+		this.world.getPlayers().forEach(player -> {
 			if (player.isSleeping()) {
 				this.sleeping.add(player);
 			}
+		});
+
+		recalculate();
+	}
+
+	public void shutdown() {
+		this.featureManager.stop();
+	}
+
+	// Player is joining the world from some other world
+	public void onJoin(Player player) {
+		this.featureManager.track(player);
+		queueRecalculation();
+	}
+
+	// Player is either leaving the server or moving to another world
+	public void onLeave(Player player) {
+		this.featureManager.untrack(player);
+		queueRecalculation();
+	}
+
+	// Ensures that only one recalculation will happen per tick
+	// Also delays the recalculation by 1 tick which means that canceled events get processed correctly
+	public void queueRecalculation() {
+		if (this.recalculationQueued) {
+			return;
 		}
 
-		this.accelerationManager.recalculate();
+		this.recalculationQueued = true;
+
+		Bukkit.getScheduler().runTask(this.plugin, () -> {
+			this.recalculationQueued = false;
+			recalculate();
+		});
+	}
+
+	public void addSleeper(Player player) {
+		this.sleeping.add(player);
+	}
+
+	public void removeSleeper(Player player) {
+		this.sleeping.remove(player);
+	}
+
+	private void recalculate() {
+		if (this.sleeping.isEmpty()) {
+			this.featureManager.stop();
+			return;
+		}
+
+		this.max = 0;
+		for (Player player : this.world.getPlayers()) {
+			if (player.getGameMode() == GameMode.SPECTATOR || player.isSleepingIgnored() || player.hasPermission("nightaccelerator.exclude") && !player.isSleeping()) {
+				continue;
+			}
+			this.max++;
+		}
+		this.featureManager.recalculate();
+		this.featureManager.start();
 	}
 
 	public List<Player> sleeping() {
@@ -116,7 +157,13 @@ public final class SleepWorld {
 	}
 
 	public void onPostNight() {
-		this.displayManager.morning();
+		if (this.world.isThundering()) {
+			this.sleeping.forEach(player -> {
+				if (player.isSleeping()) {
+					player.wakeup(false);
+				}
+			});
+		}
 
 		MorningSection morningConfig = this.config.morning();
 		if (morningConfig.clearWeather()) {

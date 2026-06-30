@@ -1,6 +1,5 @@
 package fi.fabianadrian.nightaccelerator;
 
-import fi.fabianadrian.nightaccelerator.command.NightAcceleratorCommand;
 import fi.fabianadrian.nightaccelerator.config.ConfigManager;
 import fi.fabianadrian.nightaccelerator.config.MainConfig;
 import fi.fabianadrian.nightaccelerator.listener.BedListener;
@@ -11,20 +10,17 @@ import fi.fabianadrian.nightaccelerator.locale.TranslationManager;
 import fi.fabianadrian.nightaccelerator.placeholder.PlaceholderManager;
 import fi.fabianadrian.nightaccelerator.tagresolver.TagResolverFactory;
 import fi.fabianadrian.nightaccelerator.world.WorldManager;
+import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 
 public final class NightAccelerator extends JavaPlugin {
 	public static final MiniMessage MINI_MESSAGE = MiniMessage.miniMessage();
 	private final ConfigManager configManager = new ConfigManager(this);
 	private final PlaceholderManager placeholderManager = new PlaceholderManager(this);
-	private final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 	private final TagResolverFactory resolverFactory = new TagResolverFactory();
 	private final WorldManager worldManager = new WorldManager(this);
 
@@ -35,9 +31,12 @@ public final class NightAccelerator extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		registerListeners();
-		new NightAcceleratorCommand(this).register();
+
+		getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, commands -> {
+			commands.registrar().register(NightAcceleratorCommandBrigadier.create(this));
+		});
+
 		this.placeholderManager.register();
-		new Metrics(this, 29528);
 	}
 
 	public void load() {
@@ -56,10 +55,6 @@ public final class NightAccelerator extends JavaPlugin {
 
 	public TagResolverFactory resolverFactory() {
 		return this.resolverFactory;
-	}
-
-	public ScheduledExecutorService executorService() {
-		return this.executorService;
 	}
 
 	private void registerListeners() {

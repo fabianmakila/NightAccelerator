@@ -1,6 +1,7 @@
 package fi.fabianadrian.nightaccelerator.listener;
 
 import fi.fabianadrian.nightaccelerator.NightAccelerator;
+import fi.fabianadrian.nightaccelerator.world.SleepWorld;
 import fi.fabianadrian.nightaccelerator.world.WorldManager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -8,25 +9,25 @@ import org.bukkit.event.player.PlayerBedEnterEvent;
 import org.bukkit.event.player.PlayerBedLeaveEvent;
 
 public final class BedListener implements Listener {
-	private final WorldManager speedupManager;
+	private final WorldManager worldManager;
 
 	public BedListener(NightAccelerator plugin) {
-		this.speedupManager = plugin.worldManager();
+		this.worldManager = plugin.worldManager();
 	}
 
 	@EventHandler
 	public void onBedEnter(PlayerBedEnterEvent event) {
-		if (event.isCancelled()) {
-			return;
+		SleepWorld world = this.worldManager.world(event.getPlayer().getWorld());
+		if (world != null) {
+			world.addSleeper(event.getPlayer());
 		}
-		this.speedupManager.recalculate(event.getPlayer().getWorld());
 	}
 
 	@EventHandler
 	public void onBedLeave(PlayerBedLeaveEvent event) {
-		if (event.isCancelled()) {
-			return;
+		SleepWorld world = this.worldManager.world(event.getPlayer().getWorld());
+		if (world != null) {
+			world.removeSleeper(event.getPlayer());
 		}
-		this.speedupManager.recalculate(event.getPlayer().getWorld());
 	}
 }

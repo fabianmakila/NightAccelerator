@@ -1,8 +1,10 @@
 package fi.fabianadrian.nightaccelerator.listener;
 
 import fi.fabianadrian.nightaccelerator.NightAccelerator;
+import fi.fabianadrian.nightaccelerator.world.SleepWorld;
 import fi.fabianadrian.nightaccelerator.world.WorldManager;
 import io.papermc.paper.event.player.PlayerDeepSleepEvent;
+import org.bukkit.GameMode;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
@@ -19,23 +21,42 @@ public final class PlayerListener implements Listener {
 
 	@EventHandler
 	public void onJoin(PlayerJoinEvent event) {
-		this.worldManager.recalculate(event.getPlayer().getWorld());
+		SleepWorld world = this.worldManager.world(event.getPlayer().getWorld());
+		if (world != null) {
+			world.onJoin(event.getPlayer());
+		}
 	}
 
 	@EventHandler
 	public void onLeave(PlayerQuitEvent event) {
-		this.worldManager.recalculate(event.getPlayer().getWorld());
+		SleepWorld world = this.worldManager.world(event.getPlayer().getWorld());
+		if (world != null) {
+			world.onLeave(event.getPlayer());
+		}
 	}
 
 	@EventHandler
 	public void onGamemodeChange(PlayerGameModeChangeEvent event) {
-		this.worldManager.recalculate(event.getPlayer().getWorld());
+		// Only need to do a recalculation when new game mode is spectator since it's the only game mode that can't sleep
+		if (event.getNewGameMode() != GameMode.SPECTATOR) {
+			return;
+		}
+		SleepWorld world = this.worldManager.world(event.getPlayer().getWorld());
+		if (world != null) {
+			world.queueRecalculation();
+		}
 	}
 
 	@EventHandler
 	public void onWorldChange(PlayerChangedWorldEvent event) {
-		this.worldManager.recalculate(event.getFrom());
-		this.worldManager.recalculate(event.getPlayer().getWorld());
+		SleepWorld from = this.worldManager.world(event.getPlayer().getWorld());
+		if (from != null) {
+			from.onLeave(event.getPlayer());
+		}
+		SleepWorld to = this.worldManager.world(event.getPlayer().getWorld());
+		if (to != null) {
+			to.onJoin(event.getPlayer());
+		}
 	}
 
 	@EventHandler
