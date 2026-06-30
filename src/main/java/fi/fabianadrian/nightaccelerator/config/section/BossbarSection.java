@@ -25,6 +25,6 @@ public interface BossbarSection {
 
 	@Comments("Interval in ticks how frequently bossbar will be updated")
 	default int updateRate() {
-		return 500;
+		return 10;
 	}
 }

@@ -43,6 +43,7 @@ public final class AccelerationFeature extends Feature {
 		return this.config.updateRate();
 	}
 
+	@Override
 	public void recalculate() {
 		AccelerationSection config = this.plugin.config().acceleration();
 

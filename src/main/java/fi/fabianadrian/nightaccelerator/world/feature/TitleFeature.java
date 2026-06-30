@@ -22,7 +22,7 @@ public final class TitleFeature extends Feature {
 	@Override
 	public void stop() {
 		super.stop();
-		if (super.world.sleepProgress() > 1) {
+		if (super.world.sleepProgress() >= 1) {
 			sendTitle(this.config.morningTitle(), this.config.morningSubtitle());
 		}
 	}

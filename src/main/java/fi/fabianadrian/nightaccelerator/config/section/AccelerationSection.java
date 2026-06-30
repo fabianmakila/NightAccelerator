@@ -12,18 +12,26 @@ public interface AccelerationSection {
 	}
 
 	@IntegerRange(min = 0)
+	@Comments("The minimum amount of ticks to skip with each update (one player sleeps)")
 	default int min() {
 		return 0;
 	}
 
+	@Comments("The maximum amount of tick to skip with each update (all players sleep)")
 	default int max() {
 		return 40;
 	}
 
+	@Comments("Modify this to change the shape of the curve")
+	@Comments("A factor of 1.0 equals a linear curve")
 	default double factor() {
 		return 1.0;
 	}
 
+	@Comments("Available options:")
+	@Comments("NONE - Weather won't be accelerated")
+	@Comments("RAIN - Weather will be accelerated if it's raining or thundering")
+	@Comments("ALWAYS - Weather will be accelerated with the time")
 	default AccelerateWeather accelerateWeather() {
 		return AccelerateWeather.NONE;
 	}

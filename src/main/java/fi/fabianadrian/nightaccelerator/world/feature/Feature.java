@@ -24,6 +24,11 @@ public abstract class Feature {
 
 	public void stop() {
 		this.updateTask.cancel();
+		this.updateTask = null;
+	}
+
+	public void recalculate() {
+
 	}
 
 	public boolean running() {

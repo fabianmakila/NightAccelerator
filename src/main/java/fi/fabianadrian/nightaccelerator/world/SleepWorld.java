@@ -35,12 +35,6 @@ public final class SleepWorld {
 		this.weatherManager = new WeatherManager(world);
 		this.featureManager = new FeatureManager(plugin, this);
 
-		this.world.getPlayers().forEach(player -> {
-			if (player.isSleeping()) {
-				this.sleeping.add(player);
-			}
-		});
-
 		recalculate();
 	}
 
@@ -75,15 +69,14 @@ public final class SleepWorld {
 		});
 	}
 
-	public void addSleeper(Player player) {
-		this.sleeping.add(player);
-	}
-
-	public void removeSleeper(Player player) {
-		this.sleeping.remove(player);
-	}
-
 	private void recalculate() {
+		this.sleeping.clear();
+		this.world.getPlayers().forEach(player -> {
+			if (player.isSleeping()) {
+				this.sleeping.add(player);
+			}
+		});
+
 		if (this.sleeping.isEmpty()) {
 			this.featureManager.stop();
 			return;
@@ -91,7 +84,8 @@ public final class SleepWorld {
 
 		this.max = 0;
 		for (Player player : this.world.getPlayers()) {
-			if (player.getGameMode() == GameMode.SPECTATOR || player.isSleepingIgnored() || player.hasPermission("nightaccelerator.exclude") && !player.isSleeping()) {
+			// Always count player if sleeping
+			if (!player.isSleeping() && (player.getGameMode() == GameMode.SPECTATOR || player.isSleepingIgnored() || player.hasPermission("nightaccelerator.exclude"))) {
 				continue;
 			}
 			this.max++;

@@ -29,6 +29,6 @@ public interface TitleSection {
 
 	@Comments("Interval in ticks how frequently titles will be updated")
 	default int updateRate() {
-		return 2;
+		return 10;
 	}
 }

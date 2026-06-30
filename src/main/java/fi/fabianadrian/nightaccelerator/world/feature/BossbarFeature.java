@@ -38,6 +38,11 @@ public final class BossbarFeature extends Feature {
 		return this.config.updateRate();
 	}
 
+	@Override
+	public void recalculate() {
+		this.bossBar.name(name());
+	}
+
 	public void add(Player player) {
 		this.bossBar.addViewer(player);
 	}
@@ -47,7 +52,6 @@ public final class BossbarFeature extends Feature {
 	}
 
 	protected void update() {
-		this.bossBar.name(name());
 		this.bossBar.progress(super.world.sleepProgress());
 	}
 

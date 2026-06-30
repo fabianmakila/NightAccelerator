@@ -58,6 +58,6 @@ public final class FeatureManager {
 	}
 
 	public void recalculate() {
-		this.accelerationFeature.recalculate();
+		this.features.forEach(Feature::recalculate);
 	}
 }

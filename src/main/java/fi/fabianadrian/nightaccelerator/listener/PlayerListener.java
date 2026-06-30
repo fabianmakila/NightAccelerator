@@ -6,6 +6,7 @@ import fi.fabianadrian.nightaccelerator.world.WorldManager;
 import io.papermc.paper.event.player.PlayerDeepSleepEvent;
 import org.bukkit.GameMode;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerGameModeChangeEvent;
@@ -35,7 +36,7 @@ public final class PlayerListener implements Listener {
 		}
 	}
 
-	@EventHandler
+	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
 	public void onGamemodeChange(PlayerGameModeChangeEvent event) {
 		// Only need to do a recalculation when new game mode is spectator since it's the only game mode that can't sleep
 		if (event.getNewGameMode() != GameMode.SPECTATOR) {
