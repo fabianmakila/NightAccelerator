@@ -16,6 +16,7 @@ repositories {
 	maven("https://repo.papermc.io/repository/maven-public/")
 	maven("https://repo.helpch.at/releases/") // PlaceholderAPI
 	maven("https://eldonexus.de/repository/maven-public/") // StrokkCommands
+	maven("https://repo.faststats.dev/releases") // FastStats
 }
 
 java.toolchain.languageVersion.set(JavaLanguageVersion.of(25))
@@ -45,6 +46,7 @@ dependencies {
 
 	// Misc
 	implementation("space.arim.dazzleconf:dazzleconf-toml:2.0.0-M2")
+	implementation("dev.faststats.metrics:bukkit:0.27.1")
 }
 
 paperPluginYaml {
