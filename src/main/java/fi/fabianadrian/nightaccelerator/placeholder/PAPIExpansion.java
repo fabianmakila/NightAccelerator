@@ -39,13 +39,9 @@ public final class PAPIExpansion extends PlaceholderExpansion {
 
 	@Override
 	public @Nullable String onPlaceholderRequest(Player player, @NotNull String params) {
-		if (player == null) {
-			return null;
-		}
-
 		SleepWorld world = this.worldManager.world(player);
 		if (world == null) {
-			return "Night acceleration isn't enabled on this world";
+			return "Acceleration isn't enabled on this world";
 		}
 
 		switch (params.toLowerCase(Locale.ROOT)) {
