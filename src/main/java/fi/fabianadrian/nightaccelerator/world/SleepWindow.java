@@ -1,4 +1,4 @@
-package fi.fabianadrian.nightaccelerator.night;
+package fi.fabianadrian.nightaccelerator.world;
 
 public enum SleepWindow {
 	CLEAR(12542, 23480),

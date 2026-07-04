@@ -13,7 +13,6 @@ public final class FeatureManager {
 	private final List<Feature> features = new ArrayList<>();
 	private final AccelerationFeature accelerationFeature;
 	private BossbarFeature bossbarFeature;
-	private TitleFeature titleFeature;
 
 	public FeatureManager(NightAccelerator plugin, SleepWorld world) {
 		this.accelerationFeature = new AccelerationFeature(plugin, world);
@@ -26,8 +25,7 @@ public final class FeatureManager {
 		}
 		TitleSection titleSection = plugin.config().title();
 		if (titleSection.enabled()) {
-			this.titleFeature = new TitleFeature(plugin, world);
-			this.features.add(this.titleFeature);
+			this.features.add(new TitleFeature(plugin, world));
 		}
 	}
 

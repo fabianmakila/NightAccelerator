@@ -3,7 +3,6 @@ package fi.fabianadrian.nightaccelerator.world;
 import fi.fabianadrian.nightaccelerator.NightAccelerator;
 import fi.fabianadrian.nightaccelerator.config.MainConfig;
 import fi.fabianadrian.nightaccelerator.config.section.MorningSection;
-import fi.fabianadrian.nightaccelerator.night.SleepWindow;
 import fi.fabianadrian.nightaccelerator.world.feature.FeatureManager;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
